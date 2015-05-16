@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <style>
+    main {
+      max-width: 350px; 
+    }
+    box {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      text-align: center;
+      vertical-align: middle;
+      background-color: #eee;
+      font-size: 80px;
+      margin: 5px 5px;
+    }
+    box:hover {
+      cursor: pointer;
+    }
+    box.x:after {
+      content: 'X';
+    }
+    box.o:after {
+      content: 'O';
+    }
+    </style>
+  </head>
+  <body>
+    <main>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+      <box></box>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="index.js" type="text/javascript"></script>
+  </body>
+</html>
