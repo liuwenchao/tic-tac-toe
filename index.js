@@ -17,16 +17,15 @@ var boxes = [
 $(document).on('click', 'box', function(e){
   var position = $(e.currentTarget).index();
   if (boxes[Math.floor(position/3)][position%3] === 0) {
+    boxes[Math.floor(position/3)][position%3] = value_X;
     $(e.currentTarget).addClass('x');
-    boxes[Math.floor(position/3)][position%3] = -1;
-    var state = new State(boxes);
-    var myChoice = state.placeO().placement;
+    var myChoice = new State(boxes).placeO().placement;
 
     if (myChoice === -1) {
       alert('Draw!');
       location.reload();
     } else {
-      boxes[Math.floor(myChoice/3)][myChoice%3] = 1;
+      boxes[Math.floor(myChoice/3)][myChoice%3] = value_O;
       $('box:nth('+myChoice+')').addClass('o');
 
       if (judge(boxes) !== judgement_unknown) {
@@ -37,12 +36,13 @@ $(document).on('click', 'box', function(e){
   }
 });
 
-
+// A state Object to analyze the future possibilities.
 function State(data) {
   this.data = [[0,0,0],[0,0,0],[0,0,0]];
   for (var i = 0; i < 3; i++) {
-    for (var j = 0; j < 3; j++)
+    for (var j = 0; j < 3; j++) {
       this.data[i][j] = data[i][j];
+    }
   }
   this.placement = -1;
   this.judgement = judgement_unknown;
@@ -69,7 +69,9 @@ State.prototype.placeO = function() {
       cursor.data[Math.floor(i/3)][i%3] = value_O;
       cursor = cursor.placeX();
       cursor.placement = i;
-      if (noWaytoLose(cursor.judgement, result.judgement)) {
+
+      // replace result if cursor is better, better for O player.
+      if (isBetter(cursor.judgement, result.judgement)) {
         result = cursor;
       }
     }
@@ -97,7 +99,9 @@ State.prototype.placeX = function() {
       cursor.data[Math.floor(i/3)][i%3] = value_X;
       cursor = cursor.placeO();
       cursor.placement = i;
-      if (noWaytoWin(cursor.judgement, result.judgement))  {
+
+      // replace result if cursor is worse, better for O player.
+      if (isWorse(cursor.judgement, result.judgement)) {
         result = cursor;
       }
     }
@@ -105,28 +109,30 @@ State.prototype.placeX = function() {
   return result;
 }
 
-function noWaytoLose(cursor, result) {
-    if (result === judgement_win) {
-      return false;
-    }
-    if ( result === judgement_draw    && cursor === judgement_win
-      || result === judgement_lose    && cursor !== judgement_lose
-      || result === judgement_unknown && cursor !== judgement_unknown) {
-      return true;
-    }
+function isBetter(new_judgement, old_judgement) {
+  // new_judgement is not possibly better than win
+  if (old_judgement === judgement_win) {
     return false;
+  }
+  if ( old_judgement === judgement_draw    && new_judgement === judgement_win
+    || old_judgement === judgement_lose    && new_judgement !== judgement_lose
+    || old_judgement === judgement_unknown && new_judgement !== judgement_unknown) {
+    return true;
+  }
+  return false;
 }
 
-function noWaytoWin(cursor, result) {
-    if (result === judgement_lose) {
-      return false;
-    }
-    if ( result === judgement_draw    && cursor === judgement_lose
-      || result === judgement_win     && cursor != judgement_win
-      || result === judgement_unknown && cursor != judgement_unknown) {
-        return true;
-    }
+function isWorse(new_judgement, old_judgement) {
+  // new_judgement is not possibly worse than lose
+  if (old_judgement === judgement_lose) {
     return false;
+  }
+  if ( old_judgement === judgement_draw    && new_judgement === judgement_lose
+    || old_judgement === judgement_win     && new_judgement !== judgement_win
+    || old_judgement === judgement_unknown && new_judgement !== judgement_unknown) {
+      return true;
+  }
+  return false;
 }
 
 function judge(data) {
