@@ -14,11 +14,10 @@ var boxes = [
   judgement_win = 1,
   judgement_lose = -1;
 
-function placeX(el){
-  var position = Array.prototype.indexOf.call(el.parentNode.children, el);
+function placeX(position){
   if (boxes[Math.floor(position/3)][position%3] === 0) {
     boxes[Math.floor(position/3)][position%3] = value_X;
-    el.classList.add('x');
+    document.getElementsByTagName('box')[position].classList.add('x');
     var myChoice = new State(boxes).place(value_O).placement;
 
     if (myChoice === -1) {
