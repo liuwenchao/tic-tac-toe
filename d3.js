@@ -35,8 +35,8 @@ var svgContainer = d3.select("main")
 
 function placeO(position) {
   svgContainer.append("circle")
-  .attr("cx", Math.floor(position/3) * 100 + 50)
-  .attr("cy", position % 3 * 100 + 50)
+  .attr("cx", position % 3 * 100 + 50)
+  .attr("cy", Math.floor(position/3) * 100 + 50)
   .attr("r", 40)
   .attr("class", "o");
 
