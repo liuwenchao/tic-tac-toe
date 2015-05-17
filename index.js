@@ -52,35 +52,35 @@ function State(data) {
 
 State.prototype.place = function(value) {
   var result = new State(this.data);
+  var cursor = new State(this.data);
   result.judgement = judge(this.data);
-  // if current state is already have a result, no need for furthor exploring.
+
   if (result.judgement !== judgement_unknown) {
     return result;
   }
   
-  var next_possible_state = new State(this.data);
   for(var i = 0; i < 9; i++) {
-    //copy data into next_possible_state to start trying from this state
+    //copy data into cursor to start trying from this state
     for (var m = 0; m < 3; m++) {
       for (var k = 0; k < 3; k++) {
-        next_possible_state.data[m][k] = this.data[m][k];
+        cursor.data[m][k] = this.data[m][k];
       }
     }
-    // Try with blank only.
     if (this.data[Math.floor(i/3)][i%3] === value_Blank) {
-      next_possible_state.data[Math.floor(i/3)][i%3] = value;
-      next_possible_state.placement = i;
+      //Place value at the first blank box to try.
+      cursor.data[Math.floor(i/3)][i%3] = value;
+      cursor.placement = i;
       if (value === value_O) {
-        next_possible_state = next_possible_state.place(value_X);
-        // replace result if next_possible_state is better, better for O player.
-        if (isBetter(next_possible_state.judgement, result.judgement)) {
-          result = next_possible_state;
+        cursor = cursor.place(value_X);
+        // replace result if cursor is better, better for O player.
+        if (isBetter(cursor.judgement, result.judgement)) {
+          result = cursor;
         }
       } else {
-        next_possible_state = next_possible_state.place(value_O);
-        // replace result if next_possible_state is worse, better for O player.
-        if (isWorse(next_possible_state.judgement, result.judgement)) {
-          result = next_possible_state;
+        cursor = cursor.place(value_O);
+        // replace result if cursor is worse, better for O player.
+        if (isWorse(cursor.judgement, result.judgement)) {
+          result = cursor;
         }
       }
 
