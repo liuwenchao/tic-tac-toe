@@ -19,7 +19,7 @@ $(document).on('click', 'box', function(e){
   if (boxes[Math.floor(position/3)][position%3] === 0) {
     boxes[Math.floor(position/3)][position%3] = value_X;
     $(e.currentTarget).addClass('x');
-    var myChoice = new State(boxes).place(value_O).placement;
+    var myChoice = new State(boxes).placeO().placement;
 
     if (myChoice === -1) {
       alert('Draw!');
@@ -44,13 +44,11 @@ function State(data) {
       this.data[i][j] = data[i][j];
     }
   }
-  // next placement, will be 0-8 after calculation.
   this.placement = -1;
-  // result of current state.
   this.judgement = judgement_unknown;
 }
 
-State.prototype.place = function(value) {
+State.prototype.placeO = function() {
   var result = new State(this.data);
   var cursor = new State(this.data);
   result.judgement = judge(this.data);
@@ -67,27 +65,49 @@ State.prototype.place = function(value) {
       }
     }
     if (this.data[Math.floor(i/3)][i%3] === value_Blank) {
-      //Place value at the first blank box to try.
-      cursor.data[Math.floor(i/3)][i%3] = value;
+      //Place X at the first blank box to try.
+      cursor.data[Math.floor(i/3)][i%3] = value_O;
+      cursor = cursor.placeX();
       cursor.placement = i;
-      if (value === value_O) {
-        cursor = cursor.place(value_X);
-        // replace result if cursor is better, better for O player.
-        if (isBetter(cursor.judgement, result.judgement)) {
-          result = cursor;
-        }
-      } else {
-        cursor = cursor.place(value_O);
-        // replace result if cursor is worse, better for O player.
-        if (isWorse(cursor.judgement, result.judgement)) {
-          result = cursor;
-        }
-      }
 
+      // replace result if cursor is better, better for O player.
+      if (isBetter(cursor.judgement, result.judgement)) {
+        result = cursor;
+      }
     }
   }
   return result;
 };
+
+State.prototype.placeX = function() {
+  var result = new State(this.data);
+  var cursor = new State(this.data);
+  result.judgement = judge(this.data);
+           
+  if (result.judgement !== judgement_unknown) {
+    return result;
+  }
+  
+  //copy data into cursor to start trying from this state
+  for (var i = 0; i < 9; i++) {
+    for (var m = 0; m < 3; m++) {
+      for (var k = 0; k < 3; k++) {
+        cursor.data[m][k] = this.data[m][k];
+      }
+    }
+    if (this.data[Math.floor(i/3)][i%3] === value_Blank) {
+      cursor.data[Math.floor(i/3)][i%3] = value_X;
+      cursor = cursor.placeO();
+      cursor.placement = i;
+
+      // replace result if cursor is worse, better for O player.
+      if (isWorse(cursor.judgement, result.judgement)) {
+        result = cursor;
+      }
+    }
+  }
+  return result;
+}
 
 function isBetter(new_judgement, old_judgement) {
   // new_judgement is not possibly better than win
@@ -110,7 +130,7 @@ function isWorse(new_judgement, old_judgement) {
   if ( old_judgement === judgement_draw    && new_judgement === judgement_lose
     || old_judgement === judgement_win     && new_judgement !== judgement_win
     || old_judgement === judgement_unknown && new_judgement !== judgement_unknown) {
-    return true;
+      return true;
   }
   return false;
 }
