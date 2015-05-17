@@ -2,7 +2,7 @@
 
 And you will never win, try [here](http://liuwenchao.github.com/tic-tac-toe)
 
-###Steps to deploy on EC2
+###Production: Steps to deploy on EC2
 1. Log into Amazon console
 1. Click EC2 Item.
 1. Select "Launch Instance"
@@ -28,3 +28,9 @@ And you will never win, try [here](http://liuwenchao.github.com/tic-tac-toe)
 1. in EC2 instance list, select the instance, click Actions -> Networking -> Change Security Groups
 1. check the default group, and click 'Assign Security Groups', to enable inbound traffic to 80 port.
 1. verify the site is available through new site: http://ec2-52-7-172-43.compute-1.amazonaws.com/
+
+
+### Development: How to run local with node.js
+1. [install node.js npm http-server](https://www.npmjs.com/package/http-server)
+2. run `http-server .`
+3. visit http://localhost:8080
