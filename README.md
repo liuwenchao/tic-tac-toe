@@ -1,6 +1,6 @@
 ##Tic Tac Toe
 
-And you will never win, try [here](http://liuwenchao.github.com/tic-tac-toe)
+And you will never win, try [here](http://liuwenchao.github.com/tic-tac-toe), including HTML and SVG version.
 
 ###Production: Steps to deploy on EC2
 1. Log into Amazon console
