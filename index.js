@@ -69,15 +69,16 @@ State.prototype.place = function(value) {
     // Try with blank only.
     if (this.data[Math.floor(i/3)][i%3] === value_Blank) {
       next_possible_state.data[Math.floor(i/3)][i%3] = value;
-      next_possible_state.placement = i;
       if (value === value_O) {
         next_possible_state = next_possible_state.place(value_X);
+        next_possible_state.placement = i;
         // replace result if next_possible_state is better, better for O player.
         if (isBetter(next_possible_state.judgement, result.judgement)) {
           result = next_possible_state;
         }
       } else {
         next_possible_state = next_possible_state.place(value_O);
+        next_possible_state.placement = i;
         // replace result if next_possible_state is worse, better for O player.
         if (isWorse(next_possible_state.judgement, result.judgement)) {
           result = next_possible_state;
