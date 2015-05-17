@@ -14,11 +14,11 @@ var boxes = [
   judgement_win = 1,
   judgement_lose = -1;
 
-$(document).on('click', 'box', function(e){
-  var position = $(e.currentTarget).index();
+function placeX(el){
+  var position = Array.prototype.indexOf.call(el.parentNode.children, el);
   if (boxes[Math.floor(position/3)][position%3] === 0) {
     boxes[Math.floor(position/3)][position%3] = value_X;
-    $(e.currentTarget).addClass('x');
+    el.classList.add('x');
     var myChoice = new State(boxes).place(value_O).placement;
 
     if (myChoice === -1) {
@@ -26,7 +26,7 @@ $(document).on('click', 'box', function(e){
       location.reload();
     } else {
       boxes[Math.floor(myChoice/3)][myChoice%3] = value_O;
-      $('box:nth('+myChoice+')').addClass('o');
+      document.getElementsByTagName('box')[myChoice].classList.add('o');
 
       if (judge(boxes) !== judgement_unknown) {
         alert('I win!');
@@ -34,7 +34,7 @@ $(document).on('click', 'box', function(e){
       }
     }
   }
-});
+};
 
 // A state Object to analyze the future possibilities.
 function State(data) {
