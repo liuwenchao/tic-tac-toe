@@ -1,6 +1,6 @@
 ##Tic Tac Toe
 
-try [here](http://liuwenchao.github.com/tic-tac-toe), including HTML and SVG versions.
+Try it live [here](http://liuwenchao.github.com/tic-tac-toe), including HTML and SVG versions.
 
 ###Production: Steps to deploy on EC2
 1. Log into Amazon console
