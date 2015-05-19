@@ -13,13 +13,13 @@ var svgContainer = d3.select("main")
       .attr("width", 100)
       .attr("height", 100)
       .attr("class", 'cell')
-      .on('click', function(index) {
-        if (boxes[Math.floor(index/3)][index%3] === value_Blank) {
-          placeX(index);
+      .on('click', function(position) {
+        if (boxes[position] === -1) {
+          placeX(position);
 
           var myChoice = new Finder(boxes).findNextPlacment(value_O);
 
-          if (myChoice === -1) {
+          if (myChoice === value_Blank) {
             alert('Draw!');
             location.reload();
           } else {
@@ -40,7 +40,7 @@ function placeO(position) {
   .attr("r", 40)
   .attr("class", "o");
 
-  boxes[Math.floor(position/3)][position%3] = value_O;
+  boxes[position] = value_O;
 }
 
 
@@ -57,5 +57,5 @@ function placeX(position) {
     .attr("y2", Math.floor(position/3) * 100 + 10)
     .attr("x2", (position % 3) * 100 + 90)
     .attr("class", "x");
-  boxes[Math.floor(position/3)][position%3] = value_X;
+  boxes[position] = value_X;
 }
