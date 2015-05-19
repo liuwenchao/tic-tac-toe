@@ -72,30 +72,18 @@ Finder.prototype.place = function(value) {
   return result;
 };
 
-function isBetter(new_judgement, old_judgement) {
-  // new_judgement is not possibly better than win
-  if (old_judgement === judgement_win) {
-    return false;
-  }
-  if ( old_judgement === judgement_draw    && new_judgement === judgement_win
-    || old_judgement === judgement_lose    && new_judgement !== judgement_lose
-    || old_judgement === judgement_unknown && new_judgement !== judgement_unknown) {
+function isBetter(new_result, old_result) {
+  if (old_result === judgement_unknown && new_result !== judgement_unknown)
     return true;
-  }
-  return false;
+  else 
+    return old_result < new_result;
 }
 
-function isWorse(new_judgement, old_judgement) {
-  // new_judgement is not possibly worse than lose
-  if (old_judgement === judgement_lose) {
-    return false;
-  }
-  if ( old_judgement === judgement_draw    && new_judgement === judgement_lose
-    || old_judgement === judgement_win     && new_judgement !== judgement_win
-    || old_judgement === judgement_unknown && new_judgement !== judgement_unknown) {
+function isWorse(new_result, old_result) {
+  if (old_result === judgement_unknown && new_result !== judgement_unknown)
     return true;
-  }
-  return false;
+  else 
+    return old_result > new_result;
 }
 
 function judge(data) {
