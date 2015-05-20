@@ -101,18 +101,21 @@ function judge(data) {
       } else {
         row[i]+=data[i][j];
         col[j]+=data[i][j];
-        if(row[i] === 3 || col[i] === 3) {
-          return judgement_win;
-        }
-        if (row[i] === -3 || col[i] === -3) {
-          return judgement_lose;
-        }
       }
     }
   }
 
   if (blank === 0) {
     return judgement_draw;
+  }
+
+  for (var i = 0; i < 3; i++) {
+    if(row[i] === 3 || col[i] === 3) {
+      return judgement_win;
+    }
+    if (row[i] === -3 || col[i] === -3) {
+      return judgement_lose;
+    }
   }
 
   diagonal[0] += data[0][0];
@@ -122,13 +125,11 @@ function judge(data) {
   diagonal[1] += data[1][1];
   diagonal[1] += data[0][2];
 
-  for (var i = 0; i < 2; i++) {
-      if (diagonal[i] === 3) {
-        return judgement_win;
-      }
-      if (diagonal[i] === -3) {
-        return judgement_lose;
-      }
+  if (diagonal[0] === 3 || diagonal[1] === 3) {
+      return judgement_win;
+  }
+  if (diagonal[0] === -3 || diagonal[1] === -3) {
+      return judgement_lose;
   }
 
   // There are still more moves can be made.
