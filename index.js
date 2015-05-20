@@ -1,6 +1,6 @@
 function placeX(position){
-  if (boxes[Math.floor(position/3)][position%3] === 0) {
-    boxes[Math.floor(position/3)][position%3] = value_X;
+  if (boxes[position] === value_Blank) {
+    boxes[position] = value_X;
     document.getElementsByTagName('box')[position].classList.add('x');
     var myChoice = new Finder(boxes).findNextPlacment(value_O);
 
@@ -18,6 +18,6 @@ function placeX(position){
 };
 
 function placeO(position) {
-  boxes[Math.floor(position/3)][position%3] = value_O;
+  boxes[position] = value_O;
   document.getElementsByTagName('box')[position].classList.add('o');
 }
